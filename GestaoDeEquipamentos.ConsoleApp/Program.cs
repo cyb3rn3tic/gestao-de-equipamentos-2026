@@ -1,12 +1,4 @@
-﻿using System.Security.Cryptography;
-
-string id = Convert.ToHexString(RandomNumberGenerator.GetBytes(20))
-    .ToLower()
-    .Substring(0, 7);
-
-Console.WriteLine(id);
-
-while (true)
+﻿while (true)
 {
     Console.Clear();
     Console.WriteLine("---------------------------------");
@@ -29,7 +21,18 @@ while (true)
 
     if (opcaoMenu == "1")
     {
+        /*
+        Requisito 1.1: Como funcionário, Junior quer ter a possibilidade de registrar equipamentos
+            • Deve ter identificador único (id)
+            • Deve ter um nome com no mínimo 6 caracteres;
+            • Deve ter um preço de aquisição;
+            • Deve ter uma fabricante;
+            • Deve ter uma data de fabricação;
+        */
 
+        string id;
+        string nome;
+        
     }
 
     else if (opcaoMenu == "2")
