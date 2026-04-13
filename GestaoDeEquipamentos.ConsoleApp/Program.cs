@@ -179,7 +179,7 @@ while (true)
             dataValida = DateTime.TryParse(Console.ReadLine(), out dataFabricacao);
         } while (!dataValida);
 
-        Equipamento? novoEquipamento = null;
+        Equipamento? equipamentoDeletado = null;
 
         for (int i = 0; i < equipamentos.Length; i++)
         {
@@ -190,25 +190,25 @@ while (true)
 
             if (e.id == idSelecionado)
             {
-                novoEquipamento = e;
+                equipamentoDeletado = e;
                 break;
             }
         }
 
-        if (novoEquipamento == null)
+        if (equipamentoDeletado == null)
         {
             Console.WriteLine("---------------------------------");
             Console.WriteLine("Não foi possível encontrar o equipamento informado.");
             Console.WriteLine("---------------------------------");
-            Console.Write("Digite ENTER para continuar...");
+            Console.Write("Aperte ENTER para continuar...");
             continue;
         }
         else
         {
-            novoEquipamento.nome = nome;
-            novoEquipamento.preco = preco;
-            novoEquipamento.fabricante = fabricante;
-            novoEquipamento.dataFabricacao = dataFabricacao;
+            equipamentoDeletado.nome = nome;
+            equipamentoDeletado.preco = preco;
+            equipamentoDeletado.fabricante = fabricante;
+            equipamentoDeletado.dataFabricacao = dataFabricacao;
 
             Console.WriteLine("---------------------------------");
             Console.WriteLine($"O registro \"{idSelecionado}\" foi editado com sucesso.");
@@ -224,6 +224,76 @@ while (true)
 
         A lista de equipamentos deve ser atualizada
         */
+
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Exclusão de equipamento");
+        Console.WriteLine("---------------------------------");
+
+        Console.WriteLine(
+           "{0, -7} | {1, -15} | {2, -22} | {3, -15} | {4, -10}",
+           "Id", "Nome", "Preço ", "Fabricante", "Data de Fabricação"
+       );
+
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e == null)
+                continue;
+
+            Console.WriteLine(
+                "{0, -7} | {1, -15} | {2, -22:c2} | {3, -15} | {4, -10:dd/mm/yyyy}",
+            e.id, e.nome, e.preco, e.fabricante, e.dataFabricacao);
+        }
+
+        Console.WriteLine("---------------------------------");
+
+        string? idSelecionado;
+        do
+        {
+            Console.Write("Digite o id do equipamento que deseja excluir: ");
+            idSelecionado = Console.ReadLine();
+        } while (string.IsNullOrWhiteSpace(idSelecionado));
+
+        Console.WriteLine("---------------------------------");
+
+        bool equipamentoDeletado = false;
+
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e == null)
+                continue;
+
+            if (e.id == idSelecionado)
+            {
+                equipamentos[i] = null;
+                equipamentoDeletado = true;
+                break;
+            }
+        }
+
+        if (!equipamentoDeletado)
+        {
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Não foi possível encontrar o equipamento informado.");
+            Console.WriteLine("---------------------------------");
+            Console.Write("Aperte ENTER para continuar...");
+            continue;
+        }
+        else
+        {
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine($"O registro \"{idSelecionado}\" foi excluido com sucesso.");
+            Console.WriteLine("---------------------------------");
+            Console.Write($"Aperte ENTER para continuar...");
+            Console.ReadLine();
+        }
+
     }
 
     else if (opcaoMenu == "4")
@@ -238,10 +308,33 @@ while (true)
         Deve mostrar a data de fabricação;
         */
 
-        //Console.WriteLine(id);
-        //Console.WriteLine(nome);
-        //Console.WriteLine(preco);
-        //Console.WriteLine(fabricante);
-        //Console.WriteLine(data);
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Visualização de equipamentos");
+        Console.WriteLine("---------------------------------");
+
+        Console.WriteLine(
+           "{0, -7} | {1, -15} | {2, -22} | {3, -15} | {4, -10}",
+           "Id", "Nome", "Preço ", "Fabricante", "Data de Fabricação"
+       );
+
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e == null)
+                continue;
+
+            Console.WriteLine(
+                "{0, -7} | {1, -15} | {2, -22:c2} | {3, -15} | {4, -10:dd/mm/yyyy}",
+            e.id, e.nome, e.preco, e.fabricante, e.dataFabricacao);
+        }
+        
+        Console.WriteLine("---------------------------------");      
+        Console.WriteLine("Aperte ENTER para continuar...");
+        Console.WriteLine("---------------------------------");
+        Console.ReadLine();
     }
 }
