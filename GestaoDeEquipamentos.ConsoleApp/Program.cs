@@ -47,14 +47,14 @@ while (true)
         {
             Console.Write("Digite o nome do equipamento: ");
             nome = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(nome));
+        } while (string.IsNullOrWhiteSpace(nome) || nome.Length < 3);
 
         decimal preco;
         bool precoValido;
         do
         {
             Console.Write("Digite o preço do equipamento: ");
-            precoValido = !decimal.TryParse(Console.ReadLine(), out preco);
+            precoValido = decimal.TryParse(Console.ReadLine(), out preco);
         } while (!precoValido);
 
         string? fabricante;
@@ -75,13 +75,35 @@ while (true)
         string id = Convert.ToHexString(RandomNumberGenerator.GetBytes(20)).ToLower().Substring(0, 7);
 
         Equipamento equipamento = new Equipamento();
-        equipamento.id= id;
+        equipamento.id = id;
         equipamento.nome = nome;
         equipamento.preco = preco;
         equipamento.fabricante = fabricante;
         equipamento.dataFabricacao = dataFabricacao;
 
-        
+        bool cadastrou = false;
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            if (equipamentos[i] == null)
+            {
+                equipamentos[i] = equipamento;
+                cadastrou = true;
+                break;
+            }
+        }
+
+        if (!cadastrou)
+        {
+            Console.WriteLine("Erro: Sem espaço para armazenar novos equipamentos!");
+        }
+        else
+        {
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine($"O registro \"{equipamento.id}\" foi cadastrado com sucesso.");
+            Console.WriteLine("---------------------------------");
+            Console.Write($"Aperte ENTER para continuar...");
+            Console.ReadLine();
+        }
     }
 
     else if (opcaoMenu == "2")
@@ -92,11 +114,109 @@ while (true)
         Deve ter os mesmos critérios que o Requisito 1.1.
         */
 
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Edição de equipamento");
+        Console.WriteLine("---------------------------------");
 
+        Console.WriteLine(
+           "{0, -7} | {1, -15} | {2, -22} | {3, -15} | {4, -10}",
+           "Id", "Nome", "Preço ", "Fabricante", "Data de Fabricação"
+       );
 
-        
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e == null)
+                continue;
+
+            Console.WriteLine(
+                "{0, -7} | {1, -15} | {2, -22:c2} | {3, -15} | {4, -10:dd/mm/yyyy}",
+            e.id, e.nome, e.preco, e.fabricante, e.dataFabricacao);
+        }
+
+        Console.WriteLine("---------------------------------");
+
+        string? idSelecionado;
+        do
+        {
+            Console.Write("Digite o id do equipamento que deseja editar: ");
+            idSelecionado = Console.ReadLine();
+        } while (string.IsNullOrWhiteSpace(idSelecionado));
+
+        Console.WriteLine("---------------------------------");
+
+        string? nome;
+        do
+        {
+            Console.Write("Digite o novo nome do equipamento: ");
+            nome = Console.ReadLine();
+        } while (string.IsNullOrWhiteSpace(nome) || nome.Length < 3);
+
+        decimal preco;
+        bool precoValido;
+        do
+        {
+            Console.Write("Digite o novo preço do equipamento: ");
+            precoValido = decimal.TryParse(Console.ReadLine(), out preco);
+        } while (!precoValido);
+
+        string? fabricante;
+        do
+        {
+            Console.Write("Digite o novo nome do fabricante do equipamento: ");
+            fabricante = Console.ReadLine();
+        } while (string.IsNullOrWhiteSpace(fabricante));
+
+        DateTime dataFabricacao;
+        bool dataValida;
+        do
+        {
+            Console.Write("Digite a nova data da fabricação do equipamento (dd/mm/yyyy): ");
+            dataValida = DateTime.TryParse(Console.ReadLine(), out dataFabricacao);
+        } while (!dataValida);
+
+        Equipamento? novoEquipamento = null;
+
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e == null)
+                continue;
+
+            if (e.id == idSelecionado)
+            {
+                novoEquipamento = e;
+                break;
+            }
+        }
+
+        if (novoEquipamento == null)
+        {
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Não foi possível encontrar o equipamento informado.");
+            Console.WriteLine("---------------------------------");
+            Console.Write("Digite ENTER para continuar...");
+            continue;
+        }
+        else
+        {
+            novoEquipamento.nome = nome;
+            novoEquipamento.preco = preco;
+            novoEquipamento.fabricante = fabricante;
+            novoEquipamento.dataFabricacao = dataFabricacao;
+
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine($"O registro \"{idSelecionado}\" foi editado com sucesso.");
+            Console.WriteLine("---------------------------------");
+            Console.Write($"Aperte ENTER para continuar...");
+            Console.ReadLine();
+        }
     }
-
     else if (opcaoMenu == "3")
     {
         /*
